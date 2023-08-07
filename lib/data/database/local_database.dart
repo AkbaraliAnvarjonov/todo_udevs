@@ -80,7 +80,8 @@ class LocalDatabase {
       EventFields.timeOfDay
     ]);
 
-    var list = listOfEvents.map((e) => EventModel.fromJson(e)).toList();
+    List<EventModel> list =
+        listOfEvents.map((e) => EventModel.fromJson(e)).toList();
 
     return list;
   }
