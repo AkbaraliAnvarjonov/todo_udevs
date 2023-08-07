@@ -24,6 +24,7 @@ class FormFieldWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: TextFormField(
+        controller: controller,
         maxLines: numberLine,
         style: TextStyle(
             fontFamily: "Poppins",
@@ -36,7 +37,8 @@ class FormFieldWidget extends StatelessWidget {
           suffixIcon: isLocation
               ? SvgPicture.asset(
                   AppIcons.locationIcon,
-                  color: AppColors.blue,
+                  colorFilter:
+                      const ColorFilter.mode(AppColors.blue, BlendMode.srcIn),
                 )
               : null,
           border: InputBorder.none,

@@ -9,9 +9,9 @@ import 'package:todo_udevs/utils/tools/get_it.dart';
 part 'events_event.dart';
 part 'events_state.dart';
 
-class EventsBloc extends Bloc<EventsEvent, TasksState> {
+class EventsBloc extends Bloc<EventsEvent, EventsState> {
   EventsBloc()
-      : super(TasksState(
+      : super(EventsState(
           newEvent: null,
           events: [],
           message: '',
@@ -19,8 +19,8 @@ class EventsBloc extends Bloc<EventsEvent, TasksState> {
         )) {
     on<GetAllEvents>(getAllEvents);
     on<InsertNewEvent>(insertNewEvent);
-    // on<UpdateCurrentEvent>(updateTask);
-    // on<DeleteEvent>(deleteTask);
+    on<UpdateCurrentEvent>(updateEvent);
+    on<DeleteEvent>(deleteEvent);
   }
 
   getAllEvents(GetAllEvents event, emit) async {
@@ -30,8 +30,6 @@ class EventsBloc extends Bloc<EventsEvent, TasksState> {
       status: FormStatus.success,
       events: events,
     ));
-    // emit(state.copyWith(
-    //     status: FormStatus.fail, message: myResponse.errorMessage));
   }
 
   insertNewEvent(InsertNewEvent event, emit) async {
@@ -40,24 +38,20 @@ class EventsBloc extends Bloc<EventsEvent, TasksState> {
     emit(state.copyWith(
       status: FormStatus.addingSucces,
     ));
-    // emit(state.copyWith(
-    //     status: FormStatus.fail, message: myResponse.errorMessage));
   }
 
-  // updateTask(UpdateCurrentEvent event, emit) {
-  //   getIt<TaskRepository>().updateItem(event.task);
-  //   if (event.task.mustNotify) {
-  //     getIt<TaskRepository>().setNotification(event.task);
-  //   } else {
-  //     getIt<TaskRepository>().cancelNotification(event.task.id);
-  //   }
-  //   emit(state.copyWith(status: FormStatus.updated));
-  //   add(GetAllTasks());
-  // }
+  updateEvent(UpdateCurrentEvent event, emit) {
+    emit(state.copyWith(status: FormStatus.adding));
+    getIt<DatabaseRepository>().updateEvent(eventModel: event.eventModel);
+    emit(state.copyWith(
+      status: FormStatus.addingSucces,
+    ));
+    add(GetAllEvents());
+  }
 
-  // deleteTask(DeleteTaskEvent event, emit) {
-  //   getIt<TaskRepository>().deleteItem(event.task);
-  //   emit(state.copyWith(status: FormStatus.updated));
-  //   add(GetAllTasks());
-  // }
+  deleteEvent(DeleteEvent event, emit) {
+    getIt<DatabaseRepository>().deleteEventById(id: event.eventModel.id!);
+    emit(state.copyWith(status: FormStatus.deleted));
+    add(GetAllEvents());
+  }
 }

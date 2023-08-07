@@ -1,93 +1,115 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:todo_udevs/data/models/task_model.dart';
+import 'package:intl/intl.dart';
+import 'package:todo_udevs/data/models/task_model.dart';
+import 'package:todo_udevs/ui/details_event_page/details_event_page.dart';
 import 'package:todo_udevs/utils/constants/app_colors.dart';
 import 'package:todo_udevs/utils/constants/app_icons.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class EventWidget extends StatelessWidget {
-  const EventWidget({super.key});
+  const EventWidget({
+    super.key,
+    required this.eventModel,
+  });
+  final EventModel eventModel;
 
   // final EventModel event;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
+    return ZoomTapAnimation(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailsEventPage(
+                eventModel: eventModel,
+              ),
+            ));
+      },
+      child: Column(
+        children: [
+          Container(
             height: 10.h,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: AppColors.blue,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.r),
-                  topRight: Radius.circular(10.r),
-                ))),
-        Container(
-          margin: const EdgeInsets.only(bottom: 10),
-          width: double.infinity,
-          height: 86.h,
-          decoration: BoxDecoration(
-              color: AppColors.blue.withOpacity(0.18),
+              color: Color(eventModel.color),
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10.r),
-                bottomRight: Radius.circular(10.r),
-              )),
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Watching Football",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
-                        color: AppColors.blue)),
-                Text("Manchester United vs Arsenal (Premiere League)",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400,
-                        fontSize: 8.sp,
-                        color: AppColors.blue)),
-                SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.clockIcon,
-                      height: 18.h,
-                      width: 18.h,
-                      color: AppColors.blue,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text("19:00 - 18:30",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 10.sp,
-                            color: AppColors.blue)),
-                    const SizedBox(width: 20),
-                    SvgPicture.asset(
-                      AppIcons.locationIcon,
-                      height: 18.h,
-                      width: 18.h,
-                      color: AppColors.blue,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text("Location",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 10.sp,
-                            color: AppColors.blue)),
-                  ],
-                ),
-                const SizedBox(width: 20),
-              ],
+                topLeft: Radius.circular(10.r),
+                topRight: Radius.circular(10.r),
+              ),
             ),
           ),
-        ),
-      ],
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            width: double.infinity,
+            height: 86.h,
+            decoration: BoxDecoration(
+                color: Color(eventModel.color).withOpacity(0.18),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.r),
+                  bottomRight: Radius.circular(10.r),
+                )),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(eventModel.name,
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: AppColors.blue)),
+                  Text(eventModel.description,
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400,
+                          fontSize: 8.sp,
+                          color: AppColors.blue)),
+                  SizedBox(height: 8.h),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.clockIcon,
+                        height: 18.h,
+                        width: 18.h,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.blue, BlendMode.srcIn),
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(DateFormat.Hm().format(eventModel.day),
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10.sp,
+                              color: AppColors.blue)),
+                      const SizedBox(width: 20),
+                      SvgPicture.asset(
+                        AppIcons.locationIcon,
+                        height: 18.h,
+                        width: 18.h,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.blue, BlendMode.srcIn),
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(eventModel.location,
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 10.sp,
+                              color: AppColors.blue)),
+                    ],
+                  ),
+                  const SizedBox(width: 20),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

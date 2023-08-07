@@ -5,4 +5,6 @@ class AppIcons {
   static const locationIcon = "assets/icons/location_icon.svg";
   static const clockIcon = "assets/icons/clock_icon.svg";
   static const arrowDown = "assets/icons/arrow_down_icon.svg";
+  static const penIcon = "assets/icons/pen_icon.svg";
+  static const trashIcon = "assets/icons/trash_icon.svg";
 }

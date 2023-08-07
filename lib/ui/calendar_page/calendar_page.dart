@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo_udevs/bloc/event_bloc/events_bloc.dart';
 import 'package:todo_udevs/ui/add_event_page/add_event_page.dart';
 import 'package:todo_udevs/ui/calendar_page/widgets/calendar_widget.dart';
 import 'package:todo_udevs/ui/calendar_page/widgets/event_widget.dart';
 import 'package:todo_udevs/utils/constants/app_colors.dart';
 import 'package:todo_udevs/utils/constants/app_icons.dart';
+import 'package:todo_udevs/utils/constants/form_status.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -43,56 +46,70 @@ class CalendarPage extends StatelessWidget {
           const SizedBox(width: 16),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const CalendarWidget(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Schedule",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
-                        color: AppColors.textColor)),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>  AddEventPage(),
-                        ));
-                  },
-                  child: Container(
-                    height: 30.h,
-                    width: 102.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.blue,
-                      borderRadius: BorderRadius.circular(10.r),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              const CalendarWidget(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Schedule",
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14.sp,
+                          color: AppColors.textColor)),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddEventPage(),
+                          ));
+                    },
+                    child: Container(
+                      height: 30.h,
+                      width: 102.w,
+                      decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Center(
+                        child: Text("+ Add Event",
+                            style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10.sp,
+                                color: AppColors.white)),
+                      ),
                     ),
-                    child: Center(
-                      child: Text("+ Add Event",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10.sp,
-                              color: AppColors.white)),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 12),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return const EventWidget();
-              },
-            )
-          ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 12),
+              BlocBuilder<EventsBloc, EventsState>(
+                builder: (context, state) {
+                  if (state.status == FormStatus.success) {
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.events.length,
+                      itemBuilder: (context, index) {
+                        return EventWidget(
+                          eventModel: state.events[index],
+                        );
+                      },
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

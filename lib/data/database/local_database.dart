@@ -27,7 +27,7 @@ class LocalDatabase {
       onCreate: (Database db, int version) async {
         String idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
         String textType = "TEXT";
-        // String intType = "INTEGER";
+        String intType = "INTEGER";
         String boolType = "INTEGER";
 
         await db.execute('''
@@ -35,12 +35,10 @@ class LocalDatabase {
             ${EventFields.id} $idType,
             ${EventFields.name} $textType, 
             ${EventFields.description} $textType, 
-            ${EventFields.color} $textType,
+            ${EventFields.color} $intType,
             ${EventFields.day} $textType,
             ${EventFields.isFinished} $boolType,
-            ${EventFields.location} $textType,
-            ${EventFields.mustNotify} $boolType,
-            ${EventFields.timeOfDay} $textType
+            ${EventFields.location} $textType
             )
             ''');
       },
@@ -62,7 +60,6 @@ class LocalDatabase {
       where: 'id = ?',
       whereArgs: [updatedTask.id],
     );
-    print("HAMMASI YAXSHI");
     return updatedTask.copyWith(id: id);
   }
 
@@ -75,9 +72,7 @@ class LocalDatabase {
       EventFields.color,
       EventFields.day,
       EventFields.isFinished,
-      EventFields.location,
-      EventFields.mustNotify,
-      EventFields.timeOfDay
+      EventFields.location
     ]);
 
     List<EventModel> list =
@@ -105,9 +100,7 @@ class LocalDatabase {
         EventFields.color,
         EventFields.day,
         EventFields.isFinished,
-        EventFields.location,
-        EventFields.mustNotify,
-        EventFields.timeOfDay
+        EventFields.location
       ]);
 
       var list = listOfTodos.map((e) => EventModel.fromJson(e)).toList();
@@ -137,8 +130,6 @@ class LocalDatabase {
             EventFields.day,
             EventFields.isFinished,
             EventFields.location,
-            EventFields.mustNotify,
-            EventFields.timeOfDay
           ],
           where: '${EventFields.isFinished} = ?',
           whereArgs: ['$isFinished']);

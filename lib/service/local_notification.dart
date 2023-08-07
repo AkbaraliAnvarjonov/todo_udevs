@@ -114,7 +114,7 @@ class LocalNotificationService {
   void scheduleNotification(
       {required EventModel event, required int delayedTime}) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      event.id,
+      event.id!,
       "Do not forget your event!",
       event.name,
       tz.TZDateTime.now(tz.local).add(Duration(seconds: delayedTime)),
