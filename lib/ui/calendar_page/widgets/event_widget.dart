@@ -14,8 +14,6 @@ class EventWidget extends StatelessWidget {
   });
   final EventModel eventModel;
 
-  // final EventModel event;
-
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
@@ -75,7 +73,7 @@ class EventWidget extends StatelessWidget {
                         AppIcons.clockIcon,
                         height: 18.h,
                         width: 18.h,
-                        colorFilter:  ColorFilter.mode(
+                        colorFilter: ColorFilter.mode(
                             Color(eventModel.color), BlendMode.srcIn),
                       ),
                       SizedBox(width: 4.w),
@@ -90,7 +88,7 @@ class EventWidget extends StatelessWidget {
                         AppIcons.locationIcon,
                         height: 18.h,
                         width: 18.h,
-                        colorFilter:  ColorFilter.mode(
+                        colorFilter: ColorFilter.mode(
                             Color(eventModel.color), BlendMode.srcIn),
                       ),
                       SizedBox(width: 4.w),

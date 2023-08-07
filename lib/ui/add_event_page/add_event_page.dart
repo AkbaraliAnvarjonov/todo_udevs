@@ -68,57 +68,78 @@ class _AddEventPageState extends State<AddEventPage> {
             const TextWidget(txt: "Priority Color"),
             const SizedBox(height: 10),
             //dropdown
-            SizedBox(
-              width: 90.w,
-              child: DropdownButtonFormField<Color>(
-                icon: SvgPicture.asset(AppIcons.arrowDown,
-                    height: 24.w, width: 24.w),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10)),
-                  filled: true,
-                  fillColor: AppColors.grey100,
+            Row(
+              children: [
+                SizedBox(
+                  width: 90.w,
+                  child: DropdownButtonFormField<Color>(
+                    icon: SvgPicture.asset(AppIcons.arrowDown,
+                        height: 24.w, width: 24.w),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(10)),
+                      filled: true,
+                      fillColor: AppColors.grey100,
+                    ),
+                    value: widget.color,
+                    dropdownColor: AppColors.grey100,
+                    borderRadius: BorderRadius.circular(8.r),
+                    isExpanded: true,
+                    hint: Container(
+                      height: 16,
+                      width: 16,
+                      color: widget.color,
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                        value: AppColors.blue,
+                        child: Container(
+                          height: 16,
+                          width: 16,
+                          color: AppColors.blue,
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: AppColors.red,
+                        child: Container(
+                          height: 16,
+                          width: 16,
+                          color: AppColors.red,
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: AppColors.orange,
+                        child: Container(
+                          height: 16,
+                          width: 16,
+                          color: AppColors.orange,
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      widget.color = value!;
+                    },
+                  ),
                 ),
-                value: widget.color,
-                dropdownColor: AppColors.grey100,
-                borderRadius: BorderRadius.circular(8.r),
-                isExpanded: true,
-                hint: Container(
-                  height: 16,
-                  width: 16,
-                  color: widget.color,
-                ),
-                items: [
-                  DropdownMenuItem(
-                    value: AppColors.blue,
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      color: AppColors.blue,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: AppColors.red,
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      color: AppColors.red,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: AppColors.orange,
-                    child: Container(
-                      height: 16,
-                      width: 16,
-                      color: AppColors.orange,
-                    ),
-                  ),
-                ],
-                onChanged: (value) {
-                  widget.color = value!;
-                },
-              ),
+                TextButton(
+                    onPressed: () {
+                      showTimePicker(
+                        context: context,
+                        initialTime: widget.eventModel == null
+                            ? TimeOfDay.now()
+                            : TimeOfDay(
+                                minute: DateTime.parse(widget.eventModel!.day
+                                        .toIso8601String())
+                                    .minute,
+                                hour: DateTime.parse(widget.eventModel!.day
+                                        .toIso8601String())
+                                    .hour,
+                              ),
+                      );
+                    },
+                    child: Text("Choose Time"))
+              ],
             ),
             const Spacer(),
             //button
@@ -127,7 +148,6 @@ class _AddEventPageState extends State<AddEventPage> {
               height: 46.h,
               child: BlocListener<EventsBloc, EventsState>(
                 listener: (context, state) {
-                  print(state.status);
                   if (state.status == FormStatus.addingSucces) {
                     BlocProvider.of<EventsBloc>(context).add(GetAllEvents());
                     controllerDescription.clear();
@@ -159,8 +179,6 @@ class _AddEventPageState extends State<AddEventPage> {
                       ));
                       Navigator.pop(context);
                     } else {
-                      print(widget.eventModel!.id);
-                      print(controllerDescription.text);
                       BlocProvider.of<EventsBloc>(context)
                           .add(UpdateCurrentEvent(
                         EventModel(
@@ -172,21 +190,12 @@ class _AddEventPageState extends State<AddEventPage> {
                           day: DateTime.now(),
                         ),
                       ));
-                      print(EventModel(
-                        id: widget.eventModel!.id,
-                        description: controllerDescription.text,
-                        location: controllerLocation.text,
-                        color: widget.color.value,
-                        name: controllerName.text,
-                        isFinished: 0,
-                        day: DateTime.now(),
-                      ).toJson());
                       int count = 0;
                       Navigator.of(context).popUntil((_) => count++ >= 2);
                     }
                   },
                   child: Text(
-                    "Add",
+                    widget.eventModel == null ? "Add" : "Update",
                     style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w400,
