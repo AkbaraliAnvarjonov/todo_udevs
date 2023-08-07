@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'To Do',
               theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blue),
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: AppColors.blue,
+                ),
                 useMaterial3: true,
               ),
               home: const CalendarPage(),

@@ -6,14 +6,12 @@ import 'package:todo_udevs/utils/tools/date_time_extension.dart';
 class RowItem extends StatelessWidget {
   const RowItem({
     super.key,
-    required this.hasRightBorder,
     required this.isActiveMonth,
     required this.isSelected,
     required this.date,
     required this.onTap,
   });
 
-  final bool hasRightBorder;
   final bool isActiveMonth;
   final VoidCallback onTap;
   final bool isSelected;
@@ -46,14 +44,18 @@ class RowItem extends StatelessWidget {
         child: Text(
           number.toString(),
           style: TextStyle(
-              fontSize: 14,
-              color: isPassed
-                  ? isActiveMonth
-                      ? Colors.grey
-                      : Colors.transparent
-                  : isActiveMonth
-                      ? Colors.black
-                      : Colors.grey[300]),
+              fontFamily: "Poppins",
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: isSelected
+                  ? AppColors.white
+                  : isPassed
+                      ? isActiveMonth
+                          ? Colors.grey
+                          : Colors.transparent
+                      : isActiveMonth
+                          ? Colors.black
+                          : Colors.grey[300]),
         ),
       ),
     );
