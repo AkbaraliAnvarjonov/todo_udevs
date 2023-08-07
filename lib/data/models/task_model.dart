@@ -1,4 +1,3 @@
-
 class EventFields {
   static String id = "id";
   static String name = "name";
@@ -15,7 +14,7 @@ class EventModel {
   final String description;
   final String location;
   final DateTime day;
-  final bool isFinished;
+  final int isFinished;
   final int color;
 
   EventModel({
@@ -36,7 +35,7 @@ class EventModel {
       'description': description,
       'location': location,
       'day': day.toIso8601String(),
-      'isFinished': isFinished ? 1 : 0,
+      'isFinished': isFinished,
       'color': color,
     };
   }
@@ -49,19 +48,19 @@ class EventModel {
       description: json['description'],
       location: json['location'],
       day: DateTime.parse(json['day']),
-      isFinished: json['isFinished'] == 1 ? true : false,
+      isFinished: json['isFinished'],
       color: json['color'],
     );
   }
 
   // Create a copy of EventModel with some updated properties
-  EventModel copyWith({
+  copyWith({
     int? id,
     String? name,
     String? description,
     String? location,
     DateTime? day,
-    bool? isFinished,
+    int? isFinished,
     int? color,
   }) {
     return EventModel(

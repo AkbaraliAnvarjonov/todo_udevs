@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_udevs/data/models/task_model.dart';
 import 'package:todo_udevs/ui/details_event_page/details_event_page.dart';
-import 'package:todo_udevs/utils/constants/app_colors.dart';
 import 'package:todo_udevs/utils/constants/app_icons.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -62,13 +61,13 @@ class EventWidget extends StatelessWidget {
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w600,
                           fontSize: 14.sp,
-                          color: AppColors.blue)),
+                          color: Color(eventModel.color))),
                   Text(eventModel.description,
                       style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w400,
                           fontSize: 8.sp,
-                          color: AppColors.blue)),
+                          color: Color(eventModel.color))),
                   SizedBox(height: 8.h),
                   Row(
                     children: [
@@ -76,8 +75,8 @@ class EventWidget extends StatelessWidget {
                         AppIcons.clockIcon,
                         height: 18.h,
                         width: 18.h,
-                        colorFilter: const ColorFilter.mode(
-                            AppColors.blue, BlendMode.srcIn),
+                        colorFilter:  ColorFilter.mode(
+                            Color(eventModel.color), BlendMode.srcIn),
                       ),
                       SizedBox(width: 4.w),
                       Text(DateFormat.Hm().format(eventModel.day),
@@ -85,14 +84,14 @@ class EventWidget extends StatelessWidget {
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w500,
                               fontSize: 10.sp,
-                              color: AppColors.blue)),
+                              color: Color(eventModel.color))),
                       const SizedBox(width: 20),
                       SvgPicture.asset(
                         AppIcons.locationIcon,
                         height: 18.h,
                         width: 18.h,
-                        colorFilter: const ColorFilter.mode(
-                            AppColors.blue, BlendMode.srcIn),
+                        colorFilter:  ColorFilter.mode(
+                            Color(eventModel.color), BlendMode.srcIn),
                       ),
                       SizedBox(width: 4.w),
                       Text(eventModel.location,
@@ -100,7 +99,7 @@ class EventWidget extends StatelessWidget {
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w500,
                               fontSize: 10.sp,
-                              color: AppColors.blue)),
+                              color: Color(eventModel.color))),
                     ],
                   ),
                   const SizedBox(width: 20),

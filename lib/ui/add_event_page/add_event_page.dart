@@ -133,7 +133,6 @@ class _AddEventPageState extends State<AddEventPage> {
                     controllerDescription.clear();
                     controllerLocation.clear();
                     controllerName.clear();
-                    Navigator.pop(context);
                   }
                 },
                 child: ElevatedButton(
@@ -147,16 +146,44 @@ class _AddEventPageState extends State<AddEventPage> {
                     ),
                   ),
                   onPressed: () {
-                    BlocProvider.of<EventsBloc>(context).add(InsertNewEvent(
-                      EventModel(
+                    if (widget.eventModel == null) {
+                      BlocProvider.of<EventsBloc>(context).add(InsertNewEvent(
+                        EventModel(
+                          description: controllerDescription.text,
+                          location: controllerLocation.text,
+                          color: widget.color.value,
+                          name: controllerName.text,
+                          isFinished: 0,
+                          day: DateTime.now(),
+                        ),
+                      ));
+                      Navigator.pop(context);
+                    } else {
+                      print(widget.eventModel!.id);
+                      print(controllerDescription.text);
+                      BlocProvider.of<EventsBloc>(context)
+                          .add(UpdateCurrentEvent(
+                        EventModel(
+                          description: controllerDescription.text,
+                          location: controllerLocation.text,
+                          color: widget.color.value,
+                          name: controllerName.text,
+                          isFinished: 0,
+                          day: DateTime.now(),
+                        ),
+                      ));
+                      print(EventModel(
+                        id: widget.eventModel!.id,
                         description: controllerDescription.text,
                         location: controllerLocation.text,
                         color: widget.color.value,
                         name: controllerName.text,
-                        isFinished: false,
+                        isFinished: 0,
                         day: DateTime.now(),
-                      ),
-                    ));
+                      ).toJson());
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                    }
                   },
                   child: Text(
                     "Add",
